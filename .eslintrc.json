@@ -1,0 +1,6 @@
+{
+    "extends": "strandard-with-typescript",
+    "parserOptions": {
+        "project":"./tsconfig.json"
+    }
+}
