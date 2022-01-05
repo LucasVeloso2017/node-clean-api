@@ -54,6 +54,6 @@ describe('Signup Controller', (): void => {
     })
 
     expect(response.statusCode).toBe(400)
-    expect(response.body).toEqual(new MissingParamError('password'))
+    expect(response.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 })
