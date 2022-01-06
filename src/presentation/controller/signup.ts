@@ -23,6 +23,9 @@ export class SignupController implements Controller {
       if (!isValid) {
         return badRequest(new InvalidParamError('email'))
       }
+      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+        return badRequest(new InvalidParamError('passwordConfirmation'))
+      }
     } catch (error) {
       return serverError()
     }
