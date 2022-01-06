@@ -1,8 +1,7 @@
-import { Controller, EmailValidator } from '../protocols'
+
+import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { SignupController } from './signup'
-import { InvalidParamError, MissingParamError, ServerError } from '../errors'
-import { AddAccount, AddAccountModel } from '../../domain/useCases/add-account'
-import { AccountModel } from '../../domain/models/account'
+import { AccountModel, AddAccount, AddAccountModel, Controller, EmailValidator } from './signup-protocols'
 
 class EmailValidatorStub implements EmailValidator {
   isValid (email: string): boolean {
