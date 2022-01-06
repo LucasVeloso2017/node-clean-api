@@ -101,7 +101,7 @@ describe('Signup Controller', (): void => {
         name: 'any_name',
         email: 'invalid_email@email.com',
         password: 'any_password',
-        passwordConfirmation: 'any-password'
+        passwordConfirmation: 'any_password'
       }
     })
 
@@ -118,7 +118,7 @@ describe('Signup Controller', (): void => {
         name: 'any_name',
         email: 'any_email@email.com',
         password: 'any_password',
-        passwordConfirmation: 'any-password'
+        passwordConfirmation: 'any_password'
       }
     })
 
@@ -134,7 +134,7 @@ describe('Signup Controller', (): void => {
         name: 'any_name',
         email: 'invalid_email@email.com',
         password: 'any_password',
-        passwordConfirmation: 'any-password'
+        passwordConfirmation: 'any_password'
       }
     })
 
