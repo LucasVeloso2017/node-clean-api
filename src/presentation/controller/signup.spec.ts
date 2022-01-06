@@ -1,9 +1,6 @@
-import { Controller } from './../protocols/controller'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { EmailValidator } from '../protocols/email-validator'
+import { Controller, EmailValidator } from '../protocols'
 import { SignupController } from './signup'
-import { ServerError } from '../errors/server-error'
+import { InvalidParamError, MissingParamError, ServerError } from '../errors'
 
 class EmailValidatorStub implements EmailValidator {
   isValid (email: string): boolean {
