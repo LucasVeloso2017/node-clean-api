@@ -1,11 +1,11 @@
 import { AccountModel } from '../../../domain/models/account'
 import { AddAccount, AddAccountModel } from '../../../domain/useCases/add-account'
-import { AddAccountRepository } from '../../protocols/add-account-repository'
-import { Encrypter } from './../../protocols/encrypter'
+import { Hasher } from '../../protocols/criptography/hasher'
+import { AddAccountRepository } from '../../protocols/db/account/add-account-repository'
 import { DbAddAccount } from './db-add-account'
 
-class EncrypterStub implements Encrypter {
-  async encrypt (value: string): Promise<string> {
+class EncrypterStub implements Hasher {
+  async hash (value: string): Promise<string> {
     return Promise.resolve('encrypted-password')
   }
 }
@@ -21,7 +21,7 @@ class AddAccountRepositoryStub implements AddAccountRepository {
 }
 
 interface Sut {
-  encrypterStub: Encrypter
+  encrypterStub: Hasher
   sut: AddAccount
   addAccountRepositoryStub: AddAccountRepository
 }
@@ -45,7 +45,7 @@ describe('DbAddAccount UseCase', () => {
   it('Should call Encrypter with correct password', async () => {
     const { encrypterStub, sut } = makeSut()
 
-    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
+    const encryptSpy = jest.spyOn(encrypterStub, 'hash')
 
     await sut.add({
       name: 'valid-name',
@@ -58,7 +58,7 @@ describe('DbAddAccount UseCase', () => {
   it('Should throw if encrypterStub throws', async () => {
     const { encrypterStub, sut } = makeSut()
 
-    jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(encrypterStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()))
 
     const promise = sut.add({
       name: 'valid-name',
