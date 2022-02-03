@@ -11,7 +11,9 @@
     "test:ci": "yarn test -- --coverage",
     "test:staged": "yarn test -- --findRelatedTests",
     "build": "rm -rf dist && tsc",
-    "dev": "sucrase-node src/main/server.ts",
+    "dev:second": "sucrase-node src/main/server.ts",
+    "up":"yarn build && docker-compose up -d",
+    "down":"docker-compose down",
     "start": "node dist/main/server.js"
   },
   "keywords": [],
