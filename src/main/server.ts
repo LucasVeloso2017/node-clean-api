@@ -1,4 +1,5 @@
 import { MongoHelper } from '../infra/db/mongodb/helpers/mongo-helper'
+import 'source-map-support/register'
 import app from './config/app'
 import env from './config/env'
 

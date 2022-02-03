@@ -10,11 +10,12 @@
     "test:integration": "yarn test -- --watch --no-cache -c jest-integration-config.js",
     "test:ci": "yarn test -- --coverage",
     "test:staged": "yarn test -- --findRelatedTests",
+    "debug": "node --inspect=0.0.0.0:9222 --nolazy --enable-source-maps dist/main/server.js",
     "build": "rm -rf dist && tsc",
     "dev:second": "sucrase-node src/main/server.ts",
-    "up":"yarn build && docker-compose up -d",
-    "down":"docker-compose down",
-    "start": "node dist/main/server.js"
+    "up": "yarn build && docker-compose up",
+    "down": "docker-compose down",
+    "start": "nodemon -L --watch ./dist ./dist/main/server.js"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +50,8 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.0",
+    "nodemon": "^2.0.15",
+    "source-map-support": "^0.5.21",
     "validator": "^13.7.0"
   },
   "engines": {

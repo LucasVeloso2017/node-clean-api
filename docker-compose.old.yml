@@ -11,13 +11,12 @@ services:
       - "27017:27017"
   api:
     container_name: api-container
-    image: node:16.13.1-alpine3.15
-    working_dir: /usr/src/clean-node-api
+    image: clean-node-api
     restart: always
-    command: sh -c "npm install -g yarn@1.22.17 --force && yarn --only=prod && yarn start"
-      
+    build: .
+    command: yarn start
     volumes:
-      - ./dist/:/usr/src/clean-node-api/dist/
+      - ./dist:/usr/src/clean-node-api/dist
       - ./package.json:/usr/src/clean-node-api/package.json
     ports:
       - "3000:3000"
