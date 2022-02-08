@@ -7,7 +7,13 @@ import { badRequest } from '../../helpers/http/http-helper'
 import { Validation } from '../../protocols/validation'
 import { Controller } from '../../protocols/controller'
 import { SignupController } from './signup-controller'
+import { Authentication, AuthenticationModel } from '../../../domain/useCases/authentication'
 
+class AuthenticationStub implements Authentication {
+  async auth (input: AuthenticationModel): Promise<string> {
+    return Promise.resolve('any-token')
+  }
+}
 class AddAccountStub implements AddAccount {
   async add (account: AddAccountModel): Promise<AccountModel> {
     return Promise.resolve({
@@ -27,25 +33,29 @@ interface SutType{
   sut: Controller
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const makeSut = (): SutType => {
+  const authenticationStub = new AuthenticationStub()
   const addAccountStub = new AddAccountStub()
   const validationStub = new ValidationtStub()
   const sut = new SignupController(
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   )
 
   return {
     sut,
+    authenticationStub,
     addAccountStub,
     validationStub
   }
 }
 
 describe('Signup Controller', (): void => {
-  it('10. Should call AddAccount with correct values', async () => {
+  it('Should call AddAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut()
 
     const addSpy = jest.spyOn(addAccountStub, 'add')
@@ -65,7 +75,7 @@ describe('Signup Controller', (): void => {
       password: 'any_password'
     })
   })
-  it('11. Should return 500 if AddAccount throws', async () => {
+  it('Should return 500 if AddAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
 
     jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => { throw new Error() })
@@ -82,7 +92,7 @@ describe('Signup Controller', (): void => {
     expect(response.statusCode).toBe(500)
     expect(response.body).toEqual(new ServerError(new Error().stack))
   })
-  it('11. Should return 200 if valid data is provided', async () => {
+  it('Should return 200 if valid data is provided', async () => {
     const { sut } = makeSut()
     const response = await sut.handle({
       body: {
@@ -94,6 +104,7 @@ describe('Signup Controller', (): void => {
     })
 
     expect(response.statusCode).toBe(200)
+    expect(response.body.token).toBe('any-token')
   })
   it('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
@@ -126,5 +137,37 @@ describe('Signup Controller', (): void => {
     })
 
     expect(response).toEqual(badRequest(new MissingParamError('any-field')))
+  })
+  it('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+
+    const athSpy = jest.spyOn(authenticationStub, 'auth')
+
+    await sut.handle({
+      body: {
+        email: 'valid_email@email.com',
+        password: 'any_password'
+      }
+    })
+
+    expect(athSpy).toBeCalledWith({
+      email: 'valid_email@email.com',
+      password: 'any_password'
+    })
+  })
+  it('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => { throw new Error() })
+
+    const response = await sut.handle({
+      body: {
+        email: 'valid_email@email.com',
+        password: 'any_password'
+      }
+    })
+
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toEqual(new ServerError(new Error().stack))
   })
 })
