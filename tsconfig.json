@@ -5,7 +5,6 @@
         "target": "es2019",
         "esModuleInterop": true,
         "rootDir": "./src",
-        "rootDirs": ["./src"],
         "baseUrl": "./src",
     },
     "include": [
