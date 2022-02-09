@@ -22,7 +22,7 @@ export class DbAuthentication implements Authentication {
         return null
       }
 
-      const token = await this.tokenGenerator.encrypt(account.id)
+      const token = this.tokenGenerator.encrypt(account.id.toString())
 
       await this.updateAccessToken.updateAccessToken(account.id, token)
 

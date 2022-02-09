@@ -24,8 +24,8 @@ class ComparerStub implements Comparer {
 }
 
 class TokenGeneratorStub implements Encrypter {
-  async encrypt (id: string): Promise<string> {
-    return Promise.resolve('any-token')
+  encrypt (id: string): string {
+    return 'any-token'
   }
 }
 class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
@@ -150,7 +150,9 @@ describe('DbAuthentication use Case', () => {
   it('should throw if TokenGenerator throws', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
 
-    jest.spyOn(tokenGeneratorStub, 'encrypt').mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(tokenGeneratorStub, 'encrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
 
     const response = sut.auth({
       email: 'any_mail@mail.com',

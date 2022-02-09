@@ -1,6 +1,6 @@
 export default {
   mongoUrl: process.env.MONGO_URL || 'mongodb://mongo:27017/clean-node-api',
   port: process.env.PORT || 3000,
-  secret: process.env.SECRET || 'MANGONODE',
-  salt: Number(process.env.SALT) || 12
+  secret: 'MANGONODE' || process.env.SECRET,
+  salt: parseInt(process.env.SALT) || 12
 }
