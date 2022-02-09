@@ -2,6 +2,7 @@ import { AccountModel } from '../../../domain/models/account'
 import { AddAccount, AddAccountModel } from '../../../domain/useCases/add-account'
 import { Hasher } from '../../protocols/criptography/hasher'
 import { AddAccountRepository } from '../../protocols/db/account/add-account-repository'
+import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
 
 class EncrypterStub implements Hasher {
@@ -19,24 +20,39 @@ class AddAccountRepositoryStub implements AddAccountRepository {
     })
   }
 }
+class LoadAccountByEmaiLRepositoryStub implements LoadAccountByEmailRepository {
+  async loadByEmail (email: string): Promise<AccountModel> {
+    return Promise.resolve(null)
+    // return Promise.resolve({
+    //   email: 'any-email@mail.com',
+    //   name: 'any-name',
+    //   password: 'encrypted-pass',
+    //   id: 'any-id'
+    // })
+  }
+}
 
 interface Sut {
   encrypterStub: Hasher
   sut: AddAccount
+  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   addAccountRepositoryStub: AddAccountRepository
 }
 
 const makeSut = (): Sut => {
+  const loadAccountByEmailRepositoryStub = new LoadAccountByEmaiLRepositoryStub()
   const addAccountRepositoryStub = new AddAccountRepositoryStub()
   const encrypterStub = new EncrypterStub()
 
   const sut = new DbAddAccount(
     encrypterStub,
-    addAccountRepositoryStub
+    addAccountRepositoryStub,
+    loadAccountByEmailRepositoryStub
   )
   return {
     encrypterStub,
     sut,
+    loadAccountByEmailRepositoryStub,
     addAccountRepositoryStub
   }
 }
@@ -113,5 +129,36 @@ describe('DbAddAccount UseCase', () => {
       email: 'valid-email',
       password: 'encrypted-password'
     })
+  })
+  it('should call loadAccountByEmailRepository with correct email', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+
+    await sut.add({
+      name: 'valid-name',
+      email: 'valid@mail.com',
+      password: 'valid-password'
+    })
+
+    expect(loadSpy).toHaveBeenCalledWith('valid@mail.com')
+  })
+  it('Should return null if loadAccountByEmailRepository not return null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve({
+      email: 'any-email@mail.com',
+      name: 'any-name',
+      password: 'encrypted-pass',
+      id: 'any-id'
+    }))
+
+    const response = await sut.add({
+      name: 'valid-name',
+      email: 'valid@mail.com',
+      password: 'valid-password'
+    })
+
+    expect(response).toBeNull()
   })
 })
