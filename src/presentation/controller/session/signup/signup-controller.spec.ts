@@ -1,14 +1,14 @@
-import { EmailInUseError } from './../../errors/email-in-use-error'
+import { EmailInUseError } from './../../../errors/email-in-use-error'
 
-import { AccountModel } from '../../../domain/models/account'
-import { AddAccount, AddAccountModel } from '../../../domain/useCases/add-account'
-import { MissingParamError } from '../../errors/missing-param-error'
-import { ServerError } from '../../errors/server-error'
-import { badRequest, forbidden } from '../../helpers/http/http-helper'
-import { Validation } from '../../protocols/validation'
-import { Controller } from '../../protocols/controller'
+import { AccountModel } from '../../../../domain/models/account'
+import { AddAccount, AddAccountModel } from '../../../../domain/useCases/add-account'
+import { MissingParamError } from '../../../errors/missing-param-error'
+import { ServerError } from '../../../errors/server-error'
+import { badRequest, forbidden } from '../../../helpers/http/http-helper'
+import { Validation } from '../../../protocols/validation'
+import { Controller } from '../../../protocols/controller'
 import { SignupController } from './signup-controller'
-import { Authentication, AuthenticationModel } from '../../../domain/useCases/authentication'
+import { Authentication, AuthenticationModel } from '../../../../domain/useCases/authentication'
 
 class AuthenticationStub implements Authentication {
   async auth (input: AuthenticationModel): Promise<string> {

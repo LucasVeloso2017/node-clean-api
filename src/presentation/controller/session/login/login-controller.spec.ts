@@ -1,10 +1,10 @@
-import { Controller } from '../../protocols/controller'
-import { badRequest, ok, unauthorized } from '../../helpers/http/http-helper'
+import { Controller } from '../../../protocols/controller'
+import { badRequest, ok, unauthorized } from '../../../helpers/http/http-helper'
 import { LoginController } from './login-controller'
-import { ServerError } from '../../errors/server-error'
-import { Authentication, AuthenticationModel } from '../../../domain/useCases/authentication'
-import { Validation } from '../../protocols/validation'
-import { MissingParamError } from '../../errors/missing-param-error'
+import { ServerError } from '../../../errors/server-error'
+import { Authentication, AuthenticationModel } from '../../../../domain/useCases/authentication'
+import { Validation } from '../../../protocols/validation'
+import { MissingParamError } from '../../../errors/missing-param-error'
 
 class AuthenticationStub implements Authentication {
   async auth (input: AuthenticationModel): Promise<string> {

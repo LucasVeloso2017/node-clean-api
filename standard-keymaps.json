@@ -1,0 +1,15 @@
+[
+    {
+        "key": "ctrl+a",
+        "command": "-cursorLineStart",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "editor.action.selectAll"
+    },
+    {
+        "key": "cmd+a",
+        "command": "-editor.action.selectAll"
+    }
+]
