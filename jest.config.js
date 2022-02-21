@@ -11,4 +11,5 @@ module.exports = {
     '.+\\.ts$': 'ts-jest'
   },
   preset: '@shelf/jest-mongodb'
+
 }
