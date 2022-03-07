@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account-mongo-repository'
 
@@ -65,5 +65,77 @@ describe('Account Mongo Repository', () => {
 
     expect(response).toBeTruthy()
     expect(response.accessToken).toBe('any-token')
+  })
+  it('should return an account on loadById success without role', async () => {
+    const sut = new AccountMongoRepository()
+    const user = await collection.insertOne({
+      name: 'valid-name',
+      email: 'validMail@mail.com',
+      password: 'valid-pass',
+      accessToken: 'any-token'
+    })
+
+    const response = await sut.loadById(user.insertedId.toString())
+
+    expect(response).toBeTruthy()
+    expect(response.id).toBeTruthy()
+    expect(response.name).toBe('valid-name')
+    expect(response.email).toBe('validMail@mail.com')
+    expect(response.password).toBe('valid-pass')
+  })
+  it('should return an account on loadById success with role', async () => {
+    const sut = new AccountMongoRepository()
+    const user = await collection.insertOne({
+      name: 'valid-name',
+      email: 'validMail@mail.com',
+      password: 'valid-pass',
+      accessToken: 'any-token',
+      role: 'admin'
+    })
+
+    const response = await sut.loadById(user.insertedId.toString(), 'admin')
+
+    expect(response).toBeTruthy()
+    expect(response.id).toBeTruthy()
+    expect(response.name).toBe('valid-name')
+    expect(response.email).toBe('validMail@mail.com')
+    expect(response.password).toBe('valid-pass')
+  })
+
+  it('should return null on loadById with invalid role', async () => {
+    const sut = new AccountMongoRepository()
+    const user = await collection.insertOne({
+      name: 'valid-name',
+      email: 'validMail@mail.com',
+      password: 'valid-pass',
+      accessToken: 'any-token'
+    })
+
+    const response = await sut.loadById(user.insertedId.toString(), 'admin')
+
+    expect(response).toBeFalsy()
+  })
+  it('should return an account on loadById success if user admin role', async () => {
+    const sut = new AccountMongoRepository()
+    const user = await collection.insertOne({
+      name: 'valid-name',
+      email: 'validMail@mail.com',
+      password: 'valid-pass',
+      accessToken: 'any-token',
+      role: 'admin'
+    })
+
+    const response = await sut.loadById(user.insertedId.toString())
+
+    expect(response).toBeTruthy()
+    expect(response.id).toBeTruthy()
+    expect(response.name).toBe('valid-name')
+    expect(response.email).toBe('validMail@mail.com')
+    expect(response.password).toBe('valid-pass')
+  })
+  it('should return an null on loadById failed', async () => {
+    const sut = new AccountMongoRepository()
+    const response = await sut.loadById(new ObjectId('6226464d1d4e1537377b38af').toString())
+    expect(response).toBeFalsy()
   })
 })

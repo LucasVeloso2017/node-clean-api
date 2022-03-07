@@ -1,11 +1,11 @@
-import { LoadAccountByToken } from './../../domain/useCases/load-account-by-token'
+import { LoadAccountById } from './../../domain/useCases/load-account-by-id'
 import { AuthMiddleware } from './auth-middleware'
 import { AccessDeniedError } from './../errors/access-denied-error'
 import { forbidden, ok, serverError } from './../helpers/http/http-helper'
 import { Middleware } from './../protocols/middleware'
 import { AccountModel } from '../../domain/models/account'
 
-class LoadAccountByTokenStub implements LoadAccountByToken {
+class LoadAccountByTokenStub implements LoadAccountById {
   async load (accessToken: string, role?: string): Promise<AccountModel> {
     return Promise.resolve({
       id: 'any-id',
@@ -18,7 +18,7 @@ class LoadAccountByTokenStub implements LoadAccountByToken {
 
 interface Sut {
   sut: Middleware
-  loadAccountByTokenStub: LoadAccountByToken
+  loadAccountByTokenStub: LoadAccountById
 }
 
 const makeSut = (role?: string): Sut => {
