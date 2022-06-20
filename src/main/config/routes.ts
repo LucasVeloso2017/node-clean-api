@@ -1,8 +1,9 @@
-import { Express, Router } from 'express'
+/* eslint-disable @typescript-eslint/semi */
+import { Application, Router } from 'express'
 import { readdirSync, statSync } from 'fs'
 import { resolve } from 'path'
 
-export default (app: Express): void => {
+export default (app: Application): void => {
   const router = Router()
   const routesPath = resolve(__dirname, '..', 'routes')
   app.use('/api', router)

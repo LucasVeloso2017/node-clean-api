@@ -34,7 +34,7 @@ class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
   }
 }
 
-interface Sut {
+type Sut = {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   sut: Authentication
   comparerStub: Comparer

@@ -1,13 +1,6 @@
+import { SurveyModel } from './../models/survey'
 
-interface Answers{
-  image?: string
-  answer: string
-}
-
-export interface AddSurveyModel{
-  question: string
-  answers: Answers[]
-}
+export interface AddSurveyModel extends Omit<SurveyModel, 'id'>{}
 
 export interface AddSurvey{
   add: (account: AddSurveyModel) => Promise<void>

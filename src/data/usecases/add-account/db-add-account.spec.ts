@@ -32,7 +32,7 @@ class LoadAccountByEmaiLRepositoryStub implements LoadAccountByEmailRepository {
   }
 }
 
-interface Sut {
+type Sut = {
   encrypterStub: Hasher
   sut: AddAccount
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository

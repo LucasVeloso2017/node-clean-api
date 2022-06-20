@@ -5,6 +5,7 @@ import { badRequest } from '../../../helpers/http/http-helper'
 import { Controller } from '../../../protocols/controller'
 import { Validation } from './../../../protocols/validation'
 import { AddSurveyController } from './add-survey-controller'
+import MockDate from 'mockdate'
 
 class ValidationStub implements Validation {
   validate (input: any): Error {
@@ -18,7 +19,7 @@ class AddSurveyStub implements AddSurvey {
   }
 }
 
-interface Sut {
+type Sut ={
   validationStub: Validation
   sut: Controller
   addSurveyStub: AddSurvey
@@ -40,6 +41,13 @@ const makeSut = (): Sut => {
 }
 
 describe('Add survey controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
   it('should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
 
@@ -89,20 +97,22 @@ describe('Add survey controller', () => {
 
     await sut.handle({
       body: {
-        question: '',
+        question: 'any-question',
         answers: [{
           image: 'any-image',
           answer: 'any-aswer'
-        }]
+        }],
+        date: new Date()
       }
     })
 
     expect(addSpy).toHaveBeenCalledWith({
-      question: '',
+      question: 'any-question',
       answers: [{
         image: 'any-image',
         answer: 'any-aswer'
-      }]
+      }],
+      date: new Date()
     })
   })
   it('Should return 500 if AddSurvey throws', async () => {

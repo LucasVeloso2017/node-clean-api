@@ -16,7 +16,7 @@ class LoadAccountByTokenStub implements LoadAccountById {
   }
 }
 
-interface Sut {
+type Sut = {
   sut: Middleware
   loadAccountByTokenStub: LoadAccountById
 }

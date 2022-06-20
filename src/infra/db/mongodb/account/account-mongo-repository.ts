@@ -24,24 +24,14 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
 
     if (!result) return null
 
-    const returnOBj: any = {
-      id: result._id,
-      ...result
-    }
-    return returnOBj
+    return MongoHelper.map(result)
   }
 
   async add (acc: AddAccountModel): Promise<AccountModel> {
     const collection = await MongoHelper.getCollection('accounts')
 
     const result = await collection.insertOne(acc)
-
-    const returnOBj = {
-      id: result.insertedId.toString(),
-      ...acc
-    }
-
-    return returnOBj
+    return MongoHelper.map({ _id: result.insertedId, ...acc })
   }
 
   async loadById (id: string, role?: string): Promise<AccountModel> {
@@ -57,11 +47,6 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
 
     if (!result) return null
 
-    const returnOBj: any = {
-      id: result._id,
-      ...result
-    }
-
-    return returnOBj
+    return MongoHelper.map(result)
   }
 }

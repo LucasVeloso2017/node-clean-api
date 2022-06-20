@@ -30,7 +30,7 @@ class ValidationtStub implements Validation {
     return null
   }
 }
-interface SutType{
+type SutType = {
   sut: Controller
   addAccountStub: AddAccount
   validationStub: Validation

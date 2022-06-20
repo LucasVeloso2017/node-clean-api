@@ -20,7 +20,7 @@ class LoadAccountByTokenRepositoryStub implements LoadAccountByIdRepository {
   }
 }
 
-interface Sut {
+type Sut = {
   sut: DbLoadAccountById
   decrypterStub: Decrypter
   loadAccountByTokenRepositoryStub: LoadAccountByIdRepository

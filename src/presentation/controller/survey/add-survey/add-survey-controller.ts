@@ -11,15 +11,19 @@ export class AddSurveyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { body } = httpRequest
+      const { question, answers } = httpRequest.body
 
-      const error = this.validation.validate(body)
+      const error = this.validation.validate(httpRequest.body)
 
       if (error) {
         return badRequest(error)
       }
 
-      await this.addSurvey.add(body)
+      await this.addSurvey.add({
+        answers,
+        question,
+        date: new Date()
+      })
 
       return noContent()
     } catch (error) {

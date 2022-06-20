@@ -19,7 +19,7 @@ class LogErrorRepositoryStub implements LogErrorRepository {
   }
 }
 
-interface Sut {
+type Sut = {
   controller: Controller
   sut: Controller
   logErrorRepository: LogErrorRepository

@@ -16,7 +16,7 @@ class ValidationtStub implements Validation {
     return null
   }
 }
-interface Sut {
+type Sut = {
   sut: Controller
   authenticationStub: Authentication
   validationStub: Validation

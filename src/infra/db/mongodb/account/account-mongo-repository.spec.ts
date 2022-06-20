@@ -101,7 +101,6 @@ describe('Account Mongo Repository', () => {
     expect(response.email).toBe('validMail@mail.com')
     expect(response.password).toBe('valid-pass')
   })
-
   it('should return null on loadById with invalid role', async () => {
     const sut = new AccountMongoRepository()
     const user = await collection.insertOne({

@@ -9,7 +9,7 @@ class EmailValidatorStub implements EmailValidator {
   }
 }
 
-interface Sut {
+type Sut = {
   sut: Validation
   emailValidationStub: EmailValidator
 }
